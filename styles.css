@@ -103,6 +103,7 @@ main {
   align-items: center;
   justify-content: center;
   perspective: 600px;
+  overflow: visible;
 }
 
 .carousel-image {
@@ -113,31 +114,8 @@ main {
   object-fit: cover;
   box-shadow: 0 2px 8px rgba(56,182,255,0.11);
   opacity: 0;
-  transition: 
-    transform 0.5s cubic-bezier(.4,2,.6,1), 
-    opacity 0.5s cubic-bezier(.4,2,.6,1), 
-    z-index 0s 0.5s;
-  z-index: 1;
   left: 40px;
-}
-
-.carousel-image.active {
-  opacity: 1;
-  transform: translateX(0) scale(1.1) translateZ(0px);
-  z-index: 3;
-  box-shadow: 0 4px 32px rgba(56,182,255,0.14);
-}
-
-.carousel-image.left {
-  opacity: 0.6;
-  transform: translateX(-90px) scale(0.95) rotateY(20deg) translateZ(-40px);
-  z-index: 2;
-}
-
-.carousel-image.right {
-  opacity: 0.6;
-  transform: translateX(90px) scale(0.95) rotateY(-20deg) translateZ(-40px);
-  z-index: 2;
+  /* Animations handled by JS */
 }
 
 .carousel-arrow {
