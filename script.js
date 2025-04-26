@@ -1,4 +1,7 @@
 window.addEventListener('DOMContentLoaded', () => {
+  // Page Fade-in
+  gsap.to('body', { opacity: 1, duration: 1.2, ease: "power2.out" });
+
   // Animate in sections on scroll
   gsap.utils.toArray('.animated-section').forEach(section => {
     gsap.fromTo(section,
@@ -30,7 +33,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Floating Bubbles Visuals
+  // Infinite Floating Bubbles Visuals
   function createBubble() {
     const bubble = document.createElement('div');
     const size = Math.random() * 40 + 20; // 20px to 60px
@@ -48,14 +51,18 @@ window.addEventListener('DOMContentLoaded', () => {
       x: `+=${(Math.random() - 0.5) * 100}`,
       duration: Math.random() * 3 + 3,
       ease: "sine.inOut",
-      onComplete: () => bubble.remove()
+      onComplete: () => {
+        bubble.remove();
+      }
     });
   }
 
-  // Generate a set of non-repeating bubbles on load
-  for (let i = 0; i < 16; i++) {
-    setTimeout(createBubble, Math.random() * 2000);
+  // Continuously create bubbles at random intervals
+  function bubbleLoop() {
+    createBubble();
+    setTimeout(bubbleLoop, Math.random() * 400 + 200); // 200ms to 600ms
   }
+  bubbleLoop();
 });
 
 // Bubble styles (inject into head so you don't need to edit CSS file)
