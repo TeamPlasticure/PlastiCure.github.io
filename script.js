@@ -64,7 +64,7 @@ window.addEventListener('DOMContentLoaded', () => {
   }
   bubbleLoop();
 
-  // --- True Sliding Carousel Logic ---
+  // --- True Sliding Carousel Logic with smooth incoming image slide ---
   const carouselImages = [
     "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80",
     "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
@@ -78,6 +78,9 @@ window.addEventListener('DOMContentLoaded', () => {
     right: { x: 90, scale: 0.95, rotationY: -20, zIndex: 2, opacity: 0.6 }
   };
 
+  const offscreenLeftX = -300;
+  const offscreenRightX = 300;
+
   const carousel = document.querySelector('.carousel');
   const leftArrow = document.querySelector('.carousel-arrow.left');
   const rightArrow = document.querySelector('.carousel-arrow.right');
@@ -86,13 +89,24 @@ window.addEventListener('DOMContentLoaded', () => {
   let imageElements = [];
   let isAnimating = false;
 
-  function createImage(src, alt, pos) {
+  function createImage(src, alt, pos, initialX = null) {
     const img = document.createElement('img');
     img.src = src;
     img.alt = alt;
     img.classList.add('carousel-image');
     carousel.appendChild(img);
-    setImagePosition(img, pos);
+    if (initialX !== null) {
+      gsap.set(img, {
+        x: initialX,
+        scale: positions[pos].scale,
+        rotationY: positions[pos].rotationY,
+        zIndex: positions[pos].zIndex,
+        opacity: 0,
+        pointerEvents: pos === "center" ? "auto" : "none"
+      });
+    } else {
+      setImagePosition(img, pos);
+    }
     return img;
   }
 
@@ -111,7 +125,6 @@ window.addEventListener('DOMContentLoaded', () => {
     carousel.innerHTML = '';
     imageElements = [];
 
-    // Show left, center, right images
     const total = carouselImages.length;
     const leftIdx = (carouselIndex - 1 + total) % total;
     const centerIdx = carouselIndex % total;
@@ -137,22 +150,33 @@ window.addEventListener('DOMContentLoaded', () => {
 
       // Animate current images to left, center, right
       gsap.to(imageElements[0], { // left -> out left
-        x: -200, opacity: 0, duration: 0.7, ease: "power2.in"
+        x: offscreenLeftX, opacity: 0, duration: 0.7, ease: "power2.in"
       });
       gsap.to(imageElements[1], { // center -> left
         ...positions.left, duration: 0.7, ease: "power2.inOut"
       });
       gsap.to(imageElements[2], { // right -> center
-        ...positions.center, duration: 0.7, ease: "power2.inOut",
+        ...positions.center, duration: 0.7, ease: "power2.inOut"
+      });
+
+      // Add new right image offscreen right and slide it in
+      const newImg = createImage(carouselImages[newRightIdx], "Gallery image", "right", offscreenRightX);
+      imageElements.push(newImg);
+
+      gsap.to(newImg, {
+        x: positions.right.x,
+        opacity: positions.right.opacity,
+        duration: 0.7,
+        ease: "power2.inOut",
         onComplete: () => {
           // Remove leftmost image
           imageElements[0].remove();
-          // Add new right image
-          const newImg = createImage(carouselImages[newRightIdx], "Gallery image", "right");
-          imageElements = [imageElements[1], imageElements[2], newImg];
+          // Update array: remove first, keep last three
+          imageElements = imageElements.slice(1);
           isAnimating = false;
         }
       });
+
     } else if (direction === "left") {
       carouselIndex = (carouselIndex - 1 + total) % total;
       newLeftIdx = (carouselIndex - 1 + total) % total;
@@ -161,19 +185,29 @@ window.addEventListener('DOMContentLoaded', () => {
 
       // Animate current images to right, center, left
       gsap.to(imageElements[2], { // right -> out right
-        x: 200, opacity: 0, duration: 0.7, ease: "power2.in"
+        x: offscreenRightX, opacity: 0, duration: 0.7, ease: "power2.in"
       });
       gsap.to(imageElements[1], { // center -> right
         ...positions.right, duration: 0.7, ease: "power2.inOut"
       });
       gsap.to(imageElements[0], { // left -> center
-        ...positions.center, duration: 0.7, ease: "power2.inOut",
+        ...positions.center, duration: 0.7, ease: "power2.inOut"
+      });
+
+      // Add new left image offscreen left and slide it in
+      const newImg = createImage(carouselImages[newLeftIdx], "Gallery image", "left", offscreenLeftX);
+      imageElements.unshift(newImg);
+
+      gsap.to(newImg, {
+        x: positions.left.x,
+        opacity: positions.left.opacity,
+        duration: 0.7,
+        ease: "power2.inOut",
         onComplete: () => {
           // Remove rightmost image
-          imageElements[2].remove();
-          // Add new left image
-          const newImg = createImage(carouselImages[newLeftIdx], "Gallery image", "left");
-          imageElements = [newImg, imageElements[0], imageElements[1]];
+          imageElements[imageElements.length - 1].remove();
+          // Keep only first three
+          imageElements = imageElements.slice(0, 3);
           isAnimating = false;
         }
       });
