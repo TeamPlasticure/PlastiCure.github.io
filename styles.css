@@ -116,6 +116,11 @@ main {
   opacity: 0;
   left: 40px;
   /* Animations handled by JS */
+  pointer-events: none;
+}
+
+.carousel-image.active {
+  pointer-events: auto;
 }
 
 .carousel-arrow {
