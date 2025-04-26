@@ -64,7 +64,7 @@ window.addEventListener('DOMContentLoaded', () => {
   }
   bubbleLoop();
 
-  // --- Smooth Carousel Logic ---
+  // --- True Sliding Carousel Logic ---
   const carouselImages = [
     "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80",
     "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
@@ -84,88 +84,106 @@ window.addEventListener('DOMContentLoaded', () => {
 
   let carouselIndex = 0;
   let imageElements = [];
+  let isAnimating = false;
 
-  function createImage(src, alt) {
+  function createImage(src, alt, pos) {
     const img = document.createElement('img');
     img.src = src;
     img.alt = alt;
     img.classList.add('carousel-image');
     carousel.appendChild(img);
+    setImagePosition(img, pos);
     return img;
+  }
+
+  function setImagePosition(img, pos) {
+    gsap.set(img, {
+      x: positions[pos].x,
+      scale: positions[pos].scale,
+      rotationY: positions[pos].rotationY,
+      zIndex: positions[pos].zIndex,
+      opacity: positions[pos].opacity,
+      pointerEvents: pos === "center" ? "auto" : "none"
+    });
   }
 
   function setupCarousel() {
     carousel.innerHTML = '';
     imageElements = [];
 
-    // We'll display only 3 images at a time: left, center, right
-    // Create three img elements
-    for (let i = 0; i < 3; i++) {
-      const img = createImage('', 'Gallery image');
-      imageElements.push(img);
+    // Show left, center, right images
+    const total = carouselImages.length;
+    const leftIdx = (carouselIndex - 1 + total) % total;
+    const centerIdx = carouselIndex % total;
+    const rightIdx = (carouselIndex + 1) % total;
+
+    imageElements.push(createImage(carouselImages[leftIdx], "Gallery image", "left"));
+    imageElements.push(createImage(carouselImages[centerIdx], "Gallery image", "center"));
+    imageElements.push(createImage(carouselImages[rightIdx], "Gallery image", "right"));
+  }
+
+  function slideCarousel(direction) {
+    if (isAnimating) return;
+    isAnimating = true;
+
+    const total = carouselImages.length;
+    let newLeftIdx, newCenterIdx, newRightIdx;
+
+    if (direction === "right") {
+      carouselIndex = (carouselIndex + 1) % total;
+      newLeftIdx = (carouselIndex - 1 + total) % total;
+      newCenterIdx = carouselIndex % total;
+      newRightIdx = (carouselIndex + 1) % total;
+
+      // Animate current images to left, center, right
+      gsap.to(imageElements[0], { // left -> out left
+        x: -200, opacity: 0, duration: 0.7, ease: "power2.in"
+      });
+      gsap.to(imageElements[1], { // center -> left
+        ...positions.left, duration: 0.7, ease: "power2.inOut"
+      });
+      gsap.to(imageElements[2], { // right -> center
+        ...positions.center, duration: 0.7, ease: "power2.inOut",
+        onComplete: () => {
+          // Remove leftmost image
+          imageElements[0].remove();
+          // Add new right image
+          const newImg = createImage(carouselImages[newRightIdx], "Gallery image", "right");
+          imageElements = [imageElements[1], imageElements[2], newImg];
+          isAnimating = false;
+        }
+      });
+    } else if (direction === "left") {
+      carouselIndex = (carouselIndex - 1 + total) % total;
+      newLeftIdx = (carouselIndex - 1 + total) % total;
+      newCenterIdx = carouselIndex % total;
+      newRightIdx = (carouselIndex + 1) % total;
+
+      // Animate current images to right, center, left
+      gsap.to(imageElements[2], { // right -> out right
+        x: 200, opacity: 0, duration: 0.7, ease: "power2.in"
+      });
+      gsap.to(imageElements[1], { // center -> right
+        ...positions.right, duration: 0.7, ease: "power2.inOut"
+      });
+      gsap.to(imageElements[0], { // left -> center
+        ...positions.center, duration: 0.7, ease: "power2.inOut",
+        onComplete: () => {
+          // Remove rightmost image
+          imageElements[2].remove();
+          // Add new left image
+          const newImg = createImage(carouselImages[newLeftIdx], "Gallery image", "left");
+          imageElements = [newImg, imageElements[0], imageElements[1]];
+          isAnimating = false;
+        }
+      });
     }
   }
 
-  function updateCarousel(index) {
-    const total = carouselImages.length;
-    const leftIdx = (index - 1 + total) % total;
-    const centerIdx = index % total;
-    const rightIdx = (index + 1) % total;
+  setupCarousel();
 
-    // Update src for each image element
-    imageElements[0].src = carouselImages[leftIdx];
-    imageElements[1].src = carouselImages[centerIdx];
-    imageElements[2].src = carouselImages[rightIdx];
-
-    // Animate positions with GSAP
-    gsap.to(imageElements[0], {
-      duration: 0.8,
-      x: positions.left.x,
-      scale: positions.left.scale,
-      rotationY: positions.left.rotationY,
-      opacity: positions.left.opacity,
-      zIndex: positions.left.zIndex,
-      ease: "power2.out",
-      overwrite: "auto"
-    });
-    gsap.to(imageElements[1], {
-      duration: 0.8,
-      x: positions.center.x,
-      scale: positions.center.scale,
-      rotationY: positions.center.rotationY,
-      opacity: positions.center.opacity,
-      zIndex: positions.center.zIndex,
-      ease: "power2.out",
-      overwrite: "auto"
-    });
-    gsap.to(imageElements[2], {
-      duration: 0.8,
-      x: positions.right.x,
-      scale: positions.right.scale,
-      rotationY: positions.right.rotationY,
-      opacity: positions.right.opacity,
-      zIndex: positions.right.zIndex,
-      ease: "power2.out",
-      overwrite: "auto"
-    });
-  }
-
-  function initCarousel() {
-    setupCarousel();
-    updateCarousel(carouselIndex);
-
-    leftArrow.addEventListener('click', () => {
-      carouselIndex = (carouselIndex - 1 + carouselImages.length) % carouselImages.length;
-      updateCarousel(carouselIndex);
-    });
-
-    rightArrow.addEventListener('click', () => {
-      carouselIndex = (carouselIndex + 1) % carouselImages.length;
-      updateCarousel(carouselIndex);
-    });
-  }
-
-  initCarousel();
+  leftArrow.addEventListener('click', () => slideCarousel("left"));
+  rightArrow.addEventListener('click', () => slideCarousel("right"));
 });
 
 // Bubble styles (inject into head so you don't need to edit CSS file)
