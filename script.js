@@ -17,30 +17,59 @@ window.addEventListener('DOMContentLoaded', () => {
     );
   });
 
-  // Overlay scroll animation
-  gsap.to("#intro-overlay", {
-    y: "-100%",
+  // Sticky Welcome Animation: fade and slide up after scrolling past header
+  gsap.to("#intro-sticky", {
+    opacity: 0,
+    y: -80,
     ease: "power2.inOut",
     scrollTrigger: {
-      trigger: "body",
-      start: "top top+=10",
-      end: "top top+=100",
+      trigger: "main",
+      start: "top top+=80",
+      end: "top top+=120",
       scrub: 1,
-      onUpdate: self => {
-        gsap.to("#intro-overlay", { opacity: 1 - self.progress, duration: 0.2, overwrite: true });
-      }
     }
   });
 
-  // Bring overlay back when scrolling up near the top
-  ScrollTrigger.create({
-    trigger: "body",
-    start: "top top",
-    end: "bottom top",
-    onUpdate: self => {
-      if (self.direction === -1 && window.scrollY < 100) {
-        gsap.to("#intro-overlay", { y: "0%", opacity: 1, ease: "power2.out", duration: 0.7, overwrite: true });
-      }
-    }
-  });
+  // Floating Bubbles Visuals
+  function createBubble() {
+    const bubble = document.createElement('div');
+    const size = Math.random() * 40 + 20; // 20px to 60px
+    bubble.className = 'bubble';
+    bubble.style.width = `${size}px`;
+    bubble.style.height = `${size}px`;
+    bubble.style.left = `${Math.random() * 100}vw`;
+    bubble.style.opacity = Math.random() * 0.4 + 0.2;
+    bubble.style.background = '#38b6ff';
+    document.getElementById('bubbles').appendChild(bubble);
+
+    // Animate bubble up
+    gsap.to(bubble, {
+      y: -window.innerHeight - 100,
+      x: `+=${(Math.random() - 0.5) * 100}`,
+      duration: Math.random() * 3 + 3,
+      ease: "sine.inOut",
+      onComplete: () => bubble.remove()
+    });
+  }
+
+  // Generate a set of non-repeating bubbles on load
+  for (let i = 0; i < 16; i++) {
+    setTimeout(createBubble, Math.random() * 2000);
+  }
 });
+
+// Bubble styles (inject into head so you don't need to edit CSS file)
+const bubbleStyles = document.createElement('style');
+bubbleStyles.innerHTML = `
+  .bubble {
+    position: absolute;
+    bottom: -60px;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(1px);
+    z-index: 3;
+    background: #38b6ff;
+    transition: background 0.3s;
+  }
+`;
+document.head.appendChild(bubbleStyles);
