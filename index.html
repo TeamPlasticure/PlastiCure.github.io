@@ -3,125 +3,64 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PlastiCure</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to bottom, #00c3ff, #ffff1c);
-      overflow-x: hidden;
-    }
-
-    header {
-      height: 100vh;
-      background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e') center/cover no-repeat;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      color: white;
-      text-shadow: 2px 2px 8px #000;
-      text-align: center;
-    }
-
-    header h1 {
-      font-size: 4em;
-      margin: 0;
-    }
-
-    header p {
-      font-size: 1.5em;
-      margin-top: 10px;
-    }
-
-    section {
-      padding: 60px 20px;
-      text-align: center;
-    }
-
-    .btn {
-      background-color: #ff6f61;
-      color: white;
-      padding: 12px 24px;
-      text-decoration: none;
-      font-size: 1.2em;
-      border-radius: 30px;
-      transition: background-color 0.3s ease;
-    }
-
-    .btn:hover {
-      background-color: #ff3b2e;
-    }
-
-    footer {
-      background: #111;
-      color: white;
-      padding: 20px;
-      font-size: 0.9em;
-    }
-
-    /* Bubbles Animation */
-    .bubbles {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    .bubble {
-      position: absolute;
-      bottom: -100px;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 50%;
-      animation: rise 20s infinite ease-in;
-    }
-
-    @keyframes rise {
-      0% {
-        transform: translateY(0) scale(1);
-      }
-      100% {
-        transform: translateY(-100vh) scale(0.5);
-      }
-    }
-  </style>
+  <title>Team PlastiCure</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- GSAP CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 </head>
-
 <body>
-  <div class="bubbles">
-    <div class="bubble" style="left: 10%; width: 20px; height: 20px;"></div>
-    <div class="bubble" style="left: 25%; width: 15px; height: 15px;"></div>
-    <div class="bubble" style="left: 50%; width: 30px; height: 30px;"></div>
-    <div class="bubble" style="left: 70%; width: 20px; height: 20px;"></div>
-    <div class="bubble" style="left: 85%; width: 25px; height: 25px;"></div>
+  <!-- Entrance Animation Overlay -->
+  <div id="intro-overlay">
+    <h1>Welcome to Team PlastiCure</h1>
   </div>
 
   <header>
-    <h1>PlastiCure</h1>
-    <p>Restoring Oceans with Innovation</p>
-    <a href="#contact" class="btn">Join the Movement</a>
+    <h1 class="title">Team PlastiCure</h1>
+    <p class="subtitle">Innovating for a Cleaner Future</p>
   </header>
 
-  <section>
-    <h2>About Us</h2>
-    <p>We are Team PlastiCure — using GMO bacteria, AI, and technology to remove plastic pollution and bring life back to our oceans.</p>
-  </section>
+  <main>
+    <section class="animated-section">
+      <h2>Our Mission</h2>
+      <p>
+        At Team PlastiCure, we strive to revolutionize plastic waste management through research and innovation.
+      </p>
+    </section>
 
-  <section>
-    <h2>Our Technology</h2>
-    <p>Our research combines synthetic biology and cutting-edge machine learning to target, break down, and eliminate microplastics sustainably.</p>
-  </section>
+    <section class="animated-section">
+      <h2>Gallery</h2>
+      <div class="image-collage">
+        <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80" alt="Research 1" class="rounded">
+        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" alt="Research 2" class="rounded">
+        <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80" alt="Research 3" class="rounded">
+      </div>
+    </section>
 
-  <section id="contact">
-    <h2>Contact Us</h2>
-    <p>Want to collaborate or learn more? Reach out to our team!</p>
-    <a href="mailto:teamplasticure@example.com" class="btn">Email Us</a>
-  </section>
+    <section class="animated-section">
+      <h2>Our Work in Action</h2>
+      <video class="rounded" controls width="400" poster="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80">
+        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </section>
+  </main>
 
   <footer>
-    © 2025 PlastiCure. All rights reserved.
+    <div class="footer-content">
+      <p>Want to chat? - <a href="mailto:TeamPlastiCure@gmail.com">TeamPlastiCure@gmail.com</a></p>
+      <p><a href="https://your-research-paper-link.com" target="_blank">Come check out our research paper</a></p>
+      <a href="https://instagram.com/yourinstagram" target="_blank" class="footer-icon" aria-label="Instagram">
+        <!-- Instagram SVG icon -->
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="8" fill="#fff"/>
+          <path d="M22 10a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h8zm-4 2.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7zm0 1.5a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm5.5-.75a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5z" fill="#E1306C"/>
+        </svg>
+      </a>
+      <p><a href="https://forms.gle/your-google-form" target="_blank">Free to fill a survey?</a></p>
+    </div>
   </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
