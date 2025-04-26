@@ -64,7 +64,7 @@ window.addEventListener('DOMContentLoaded', () => {
   }
   bubbleLoop();
 
-  // Carousel Gallery Logic
+  // --- Smooth Carousel Logic ---
   const carouselImages = [
     "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80",
     "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
@@ -72,51 +72,100 @@ window.addEventListener('DOMContentLoaded', () => {
     // Add more image URLs here if you want!
   ];
 
-  function renderCarousel(index) {
-    const carousel = document.querySelector('.carousel');
-    if (!carousel) return;
-    carousel.innerHTML = "";
+  const positions = {
+    left: { x: -90, scale: 0.95, rotationY: 20, zIndex: 2, opacity: 0.6 },
+    center: { x: 0, scale: 1.1, rotationY: 0, zIndex: 3, opacity: 1 },
+    right: { x: 90, scale: 0.95, rotationY: -20, zIndex: 2, opacity: 0.6 }
+  };
 
-    // Get indices for left, center, right images (wrap around)
-    const leftIdx = (index - 1 + carouselImages.length) % carouselImages.length;
-    const rightIdx = (index + 1) % carouselImages.length;
-
-    // Left image
-    const leftImg = document.createElement('img');
-    leftImg.src = carouselImages[leftIdx];
-    leftImg.className = "carousel-image left";
-    leftImg.alt = "Gallery image";
-    carousel.appendChild(leftImg);
-
-    // Center (active) image
-    const centerImg = document.createElement('img');
-    centerImg.src = carouselImages[index];
-    centerImg.className = "carousel-image active";
-    centerImg.alt = "Gallery image";
-    carousel.appendChild(centerImg);
-
-    // Right image
-    const rightImg = document.createElement('img');
-    rightImg.src = carouselImages[rightIdx];
-    rightImg.className = "carousel-image right";
-    rightImg.alt = "Gallery image";
-    carousel.appendChild(rightImg);
-  }
-
-  let carouselIndex = 0;
-  renderCarousel(carouselIndex);
-
+  const carousel = document.querySelector('.carousel');
   const leftArrow = document.querySelector('.carousel-arrow.left');
   const rightArrow = document.querySelector('.carousel-arrow.right');
 
-  leftArrow.addEventListener('click', () => {
-    carouselIndex = (carouselIndex - 1 + carouselImages.length) % carouselImages.length;
-    renderCarousel(carouselIndex);
-  });
-  rightArrow.addEventListener('click', () => {
-    carouselIndex = (carouselIndex + 1) % carouselImages.length;
-    renderCarousel(carouselIndex);
-  });
+  let carouselIndex = 0;
+  let imageElements = [];
+
+  function createImage(src, alt) {
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = alt;
+    img.classList.add('carousel-image');
+    carousel.appendChild(img);
+    return img;
+  }
+
+  function setupCarousel() {
+    carousel.innerHTML = '';
+    imageElements = [];
+
+    // We'll display only 3 images at a time: left, center, right
+    // Create three img elements
+    for (let i = 0; i < 3; i++) {
+      const img = createImage('', 'Gallery image');
+      imageElements.push(img);
+    }
+  }
+
+  function updateCarousel(index) {
+    const total = carouselImages.length;
+    const leftIdx = (index - 1 + total) % total;
+    const centerIdx = index % total;
+    const rightIdx = (index + 1) % total;
+
+    // Update src for each image element
+    imageElements[0].src = carouselImages[leftIdx];
+    imageElements[1].src = carouselImages[centerIdx];
+    imageElements[2].src = carouselImages[rightIdx];
+
+    // Animate positions with GSAP
+    gsap.to(imageElements[0], {
+      duration: 0.8,
+      x: positions.left.x,
+      scale: positions.left.scale,
+      rotationY: positions.left.rotationY,
+      opacity: positions.left.opacity,
+      zIndex: positions.left.zIndex,
+      ease: "power2.out",
+      overwrite: "auto"
+    });
+    gsap.to(imageElements[1], {
+      duration: 0.8,
+      x: positions.center.x,
+      scale: positions.center.scale,
+      rotationY: positions.center.rotationY,
+      opacity: positions.center.opacity,
+      zIndex: positions.center.zIndex,
+      ease: "power2.out",
+      overwrite: "auto"
+    });
+    gsap.to(imageElements[2], {
+      duration: 0.8,
+      x: positions.right.x,
+      scale: positions.right.scale,
+      rotationY: positions.right.rotationY,
+      opacity: positions.right.opacity,
+      zIndex: positions.right.zIndex,
+      ease: "power2.out",
+      overwrite: "auto"
+    });
+  }
+
+  function initCarousel() {
+    setupCarousel();
+    updateCarousel(carouselIndex);
+
+    leftArrow.addEventListener('click', () => {
+      carouselIndex = (carouselIndex - 1 + carouselImages.length) % carouselImages.length;
+      updateCarousel(carouselIndex);
+    });
+
+    rightArrow.addEventListener('click', () => {
+      carouselIndex = (carouselIndex + 1) % carouselImages.length;
+      updateCarousel(carouselIndex);
+    });
+  }
+
+  initCarousel();
 });
 
 // Bubble styles (inject into head so you don't need to edit CSS file)
