@@ -63,6 +63,60 @@ window.addEventListener('DOMContentLoaded', () => {
     setTimeout(bubbleLoop, Math.random() * 400 + 200); // 200ms to 600ms
   }
   bubbleLoop();
+
+  // Carousel Gallery Logic
+  const carouselImages = [
+    "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80",
+    "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
+    "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80"
+    // Add more image URLs here if you want!
+  ];
+
+  function renderCarousel(index) {
+    const carousel = document.querySelector('.carousel');
+    if (!carousel) return;
+    carousel.innerHTML = "";
+
+    // Get indices for left, center, right images (wrap around)
+    const leftIdx = (index - 1 + carouselImages.length) % carouselImages.length;
+    const rightIdx = (index + 1) % carouselImages.length;
+
+    // Left image
+    const leftImg = document.createElement('img');
+    leftImg.src = carouselImages[leftIdx];
+    leftImg.className = "carousel-image left";
+    leftImg.alt = "Gallery image";
+    carousel.appendChild(leftImg);
+
+    // Center (active) image
+    const centerImg = document.createElement('img');
+    centerImg.src = carouselImages[index];
+    centerImg.className = "carousel-image active";
+    centerImg.alt = "Gallery image";
+    carousel.appendChild(centerImg);
+
+    // Right image
+    const rightImg = document.createElement('img');
+    rightImg.src = carouselImages[rightIdx];
+    rightImg.className = "carousel-image right";
+    rightImg.alt = "Gallery image";
+    carousel.appendChild(rightImg);
+  }
+
+  let carouselIndex = 0;
+  renderCarousel(carouselIndex);
+
+  const leftArrow = document.querySelector('.carousel-arrow.left');
+  const rightArrow = document.querySelector('.carousel-arrow.right');
+
+  leftArrow.addEventListener('click', () => {
+    carouselIndex = (carouselIndex - 1 + carouselImages.length) % carouselImages.length;
+    renderCarousel(carouselIndex);
+  });
+  rightArrow.addEventListener('click', () => {
+    carouselIndex = (carouselIndex + 1) % carouselImages.length;
+    renderCarousel(carouselIndex);
+  });
 });
 
 // Bubble styles (inject into head so you don't need to edit CSS file)
