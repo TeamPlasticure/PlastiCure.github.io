@@ -1,231 +1,146 @@
-body, h1, h2, h3, h4, h5, h6, p, a, .subtitle {
-  color: #38b6ff !important;
-  font-family: Georgia, 'Times New Roman', Times, serif;
-}
-
-body {
-  background: #f8f9fa;
+/* Reset */
+* {
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
-  opacity: 0; /* For fade-in */
+  box-sizing: border-box;
 }
 
-#bubbles {
-  position: fixed;
-  pointer-events: none;
-  width: 100vw;
-  height: 100vh;
-  top: 0; left: 0;
-  z-index: 1;
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #121212;
+  color: #e0e0e0;
+  line-height: 1.6;
+  scroll-behavior: smooth;
 }
 
-#intro-sticky {
-  position: sticky;
-  top: 0;
-  width: 100%;
-  background: #fff;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 180px;
-  box-shadow: 0 2px 16px rgba(56,182,255,0.08);
-  will-change: transform, opacity;
-  transition: opacity 0.5s, transform 0.5s;
+/* Container */
+.container {
+  width: min(90%, 1000px);
+  margin: 0 auto;
+  padding: 2rem 0;
 }
 
-#intro-sticky h1 {
-  font-family: 'Times New Roman', Times, serif;
-  font-size: 2.5em;
-  letter-spacing: 2px;
-  color: #38b6ff;
-  margin: 0;
-  transition: color 0.3s;
-}
-
+/* Header */
 header {
+  background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+  padding: 3rem 0;
   text-align: center;
-  padding: 2em 0 1em 0;
-  z-index: 2;
-  position: relative;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  border-bottom-left-radius: 50px;
+  border-bottom-right-radius: 50px;
 }
 
-.title, h1, h2 {
-  font-family: 'Times New Roman', Times, serif;
-  margin: 0.5em 0;
+header h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.2rem;
+  letter-spacing: 3px;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
 }
 
 .subtitle {
-  font-size: 1.2em;
-  margin-bottom: 1em;
+  font-weight: 300;
+  font-size: 1.25rem;
+  color: #d1eaffcc;
+  letter-spacing: 1.5px;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
 }
 
-main {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 2em 1em;
-  position: relative;
-  z-index: 2;
+/* Main Sections */
+main section {
+  margin-bottom: 5rem;
 }
 
-.animated-section {
-  background: #fff;
-  border-radius: 16px;
-  margin: 2em 0;
-  padding: 2em;
-  box-shadow: 0 2px 16px rgba(56,182,255,0.06);
+main h2 {
+  font-weight: 700;
+  font-size: 2.4rem;
+  margin-bottom: 1rem;
+  color: #00aaff;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
+
+/* Paragraphs */
+main p {
+  font-weight: 300;
+  font-size: 1.15rem;
+  max-width: 800px;
+  color: #ccc;
+  line-height: 1.7;
+}
+
+/* Cards Grid */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* Card Styles */
+.card {
+  background: linear-gradient(145deg, #1e1e1e, #2c2c2c);
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow:
+    5px 5px 15px #0b0b0b,
+    -5px -5px 15px #3a3a3a;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: default;
+}
+
+.card:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow:
+    8px 8px 25px #0072ff88,
+    -8px -8px 25px #00c6ff88;
+}
+
+.card h3 {
+  color: #00c6ff;
+  font-weight: 600;
+  margin-bottom: 0.7rem;
+  letter-spacing: 1.2px;
+}
+
+.card p {
+  font-weight: 300;
+  color: #bbb;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Footer */
+footer {
+  background: #111;
+  color: #555;
+  padding: 2rem 0;
+  text-align: center;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  border-top: 1px solid #222;
+}
+
+/* Fade-in Initial State */
+.fade-in {
   opacity: 0;
   transform: translateY(40px);
-  transition: box-shadow 0.3s;
 }
 
-.animated-section:hover {
-  box-shadow: 0 4px 32px rgba(56,182,255,0.12);
-}
-
-/* Carousel styles */
-.carousel-container {
-  position: relative;
-  width: 370px;
-  height: 170px;
-  margin: 2em auto 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.carousel {
-  position: relative;
-  width: 260px;
-  height: 160px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  perspective: 600px;
-  overflow: visible;
-}
-
-.carousel-image {
-  position: absolute;
-  border-radius: 18px;
-  width: 180px;
-  height: 120px;
-  object-fit: cover;
-  box-shadow: 0 2px 8px rgba(56,182,255,0.11);
-  opacity: 0;
-  left: 40px;
-  /* Animations handled by JS */
-  pointer-events: none;
-}
-
-.carousel-image.active {
-  pointer-events: auto;
-}
-
-.carousel-arrow {
-  background: #fff;
-  border: none;
-  color: #38b6ff;
-  font-size: 2em;
-  cursor: pointer;
-  z-index: 4;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  box-shadow: 0 2px 8px rgba(56,182,255,0.11);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.2s;
-  margin: 0 10px;
-}
-.carousel-arrow:hover {
-  background: #e6f6ff;
-}
-
-.image-collage {
-  display: flex;
-  gap: 1em;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin: 1em 0;
-}
-
-.image-collage img,
-video.rounded {
-  border-radius: 18px;
-  width: 180px;
-  height: 120px;
-  object-fit: cover;
-  box-shadow: 0 2px 8px rgba(56,182,255,0.11);
-  margin-bottom: 0.5em;
-}
-
-video.rounded {
-  width: 100%;
-  max-width: 400px;
-  display: block;
-  margin: 0 auto;
-}
-
-footer {
-  background: #fff;
-  border-top: 1px solid #eee;
-  padding: 2em 1em;
-  text-align: center;
-  font-size: 1.1em;
-  z-index: 2;
-  position: relative;
-}
-
-.footer-content {
-  max-width: 700px;
-  margin: 0 auto;
-}
-
-.footer-content a {
-  color: #38b6ff !important;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-.footer-content a:hover {
-  color: #222 !important;
-}
-
-.footer-icon {
-  display: inline-block;
-  margin: 0.5em 0;
-  vertical-align: middle;
-}
-
+/* Responsive */
 @media (max-width: 600px) {
-  main {
-    padding: 1em 0.5em;
+  header h1 {
+    font-size: 2.2rem;
   }
-  .image-collage img,
-  video.rounded {
-    width: 100px;
-    height: 70px;
+
+  main h2 {
+    font-size: 1.8rem;
   }
-  #intro-sticky {
-    height: 100px;
-  }
-  #intro-sticky h1 {
-    font-size: 1.2em;
-  }
-  .carousel-container {
-    width: 200px;
-    height: 100px;
-  }
-  .carousel {
-    width: 120px;
-    height: 80px;
-  }
-  .carousel-image {
-    width: 80px;
-    height: 60px;
-    left: 10px;
+
+  .card {
+    padding: 1.5rem;
   }
 }
