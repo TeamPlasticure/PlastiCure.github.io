@@ -1,71 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Team PlastiCure</title>
-  <link rel="stylesheet" href="styles.css">
-  <!-- GSAP CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Team Plasticure</title>
+  <link rel="stylesheet" href="style.css" />
+  <script defer src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+  <script defer src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
+  <script defer src="script.js"></script>
 </head>
 <body>
-  <!-- Floating Bubbles Visual Effect -->
-  <div id="bubbles"></div>
-
-  <!-- Sticky Welcome Overlay -->
-  <div id="intro-sticky">
-    <h1>Welcome to Team PlastiCure</h1>
-  </div>
-
   <header>
-    <h1 class="title">Team PlastiCure</h1>
-    <p class="subtitle">Innovating for a Cleaner Future</p>
+    <h1>Team Plasticure</h1>
+    <p class="subtitle">Global Innovation Challenge Finalists</p>
   </header>
 
   <main>
-    <section class="animated-section">
+    <section class="fade-in">
+      <h2>About Us</h2>
+      <p>We’re a group of passionate students tackling plastic pollution with innovative solutions.</p>
+    </section>
+
+    <section class="fade-in">
       <h2>Our Mission</h2>
-      <p>
-        At Team PlastiCure, we strive to revolutionize plastic waste management through research and innovation.
-      </p>
+      <p>Plasticure aims to revolutionize how we reuse plastic waste by converting it into durable construction materials.</p>
     </section>
 
-    <section class="animated-section">
-      <h2>Gallery</h2>
-      <div class="carousel-container">
-        <button class="carousel-arrow left" aria-label="Previous image">&#10094;</button>
-        <div class="carousel">
-          <!-- Images will be inserted by JS -->
+    <section class="projects fade-in">
+      <h2>Our Projects</h2>
+      <div class="card-grid">
+        <div class="card">
+          <h3>Eco Bricks</h3>
+          <p>High-durability bricks made from recycled plastic and natural resins.</p>
         </div>
-        <button class="carousel-arrow right" aria-label="Next image">&#10095;</button>
+        <div class="card">
+          <h3>Plastic Collection Drive</h3>
+          <p>Community efforts to collect and sort plastic waste efficiently.</p>
+        </div>
+        <div class="card">
+          <h3>Educational Campaign</h3>
+          <p>Workshops and seminars on sustainable living and plastic alternatives.</p>
+        </div>
       </div>
-    </section>
-
-    <section class="animated-section">
-      <h2>Our Work in Action</h2>
-      <video class="rounded" controls width="400" poster="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80">
-        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
     </section>
   </main>
 
   <footer>
-    <div class="footer-content">
-      <p>Want to chat? - <a href="mailto:TeamPlastiCure@gmail.com">TeamPlastiCure@gmail.com</a></p>
-      <p><a href="https://your-research-paper-link.com" target="_blank">Come check out our research paper</a></p>
-      <a href="https://instagram.com/yourinstagram" target="_blank" class="footer-icon" aria-label="Instagram">
-        <!-- Instagram SVG icon -->
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-          <rect width="32" height="32" rx="8" fill="#fff"/>
-          <path d="M22 10a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h8zm-4 2.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7zm0 1.5a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm5.5-.75a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5z" fill="#38b6ff"/>
-        </svg>
-      </a>
-      <p><a href="https://forms.gle/your-google-form" target="_blank">Free to fill a survey?</a></p>
-    </div>
+    <p>© 2025 Team Plasticure. All rights reserved.</p>
   </footer>
-
-  <script src="script.js"></script>
 </body>
 </html>
